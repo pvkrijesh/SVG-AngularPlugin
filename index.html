@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+ 
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.1/angular.min.js"></script>
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/js/i18n/defaults-*.min.js"></script>
+
+<style>
+
+
+#buttonGrp{
+cursor: pointer;
+
+}
+.middle{
+background-image:url("cc.jpg");
+}
+.left{
+background-position: 100px 5px;
+    background: cadetblue;
+height: 518px;
+}
+.right{
+    background: cadetblue;
+height: 900px;
+}
+.textcolor{
+color:white;
+font-weight: 700;
+}
+
+#overlay4{
+    position:absolute;
+    top:0;
+    left:0;
+    width: 100%;
+     z-index:1;
+     height: 100%;
+}
+
+#overlay4 div{
+       position: relative;
+    left: 50%;
+    margin-left: -587px;
+    border: 1px solid #666;
+    background-color: white;
+    border-radius: 5px;
+    color: #FFF;
+    width: 1178px;
+    z-index: 3;
+    top: 10px;
+    height: 870px;
+
+    }
+
+#overlay4 div.background{
+            position: absolute; 
+            width:100%;
+            height: 100%;
+            margin:auto;
+            background-color: white;
+            opacity:0.5;
+            z-index:2;
+            top:0;
+            left:0;
+    }
+	
+	.listBox{    width: 130px;
+    margin-top: 10px;
+    height: 30px;
+	background: cyan;
+    color: red;
+    font-weight: 700;
+   }
+</style>
+
+</head>
+<body ng-app="createSVG" ng-controller="MainCtrl" >
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="col-md-3 middle"><b>Select Your SVG And Draw!</b>				
+					<select  class="listBox" ng-model="currentItems"            
+							ng-options="opt as opt for opt in svgType"></select>
+					<div  ng-if="currentItems=='circle'" ng-repeat="field in circleFields">
+						<form role="form">
+							<div class="form-group textcolor">
+								{{field}}<input class="form-control"  ng-model=filters[field] required />						
+							</div>	
+  				
+					</div>
+					
+					<div  ng-if="currentItems=='rect'" ng-repeat="field in rectFields">
+						<form role="form">
+							<div class="form-group textcolor" >  
+								{{field}}<input  class="form-control" ng-model=filters[field] required />	  	  
+							</div>	  
+					</div>
+
+					<div  ng-if="currentItems=='line'" ng-repeat="field in lineFields">
+						<form role="form">
+							<div class="form-group textcolor" >  
+								{{field}}<input  class="form-control" ng-model=filters[field] required />	  	  
+							</div>	  
+					</div>
+
+					<div  ng-if="currentItems=='ellipse'" ng-repeat="field in ellipseFields">
+						<form role="form">
+							<div class="form-group textcolor" >  
+								{{field}}<input  class="form-control" ng-model=filters[field] required />	  	  
+							</div>	  
+					</div>
+
+					<div  ng-if="currentItems=='polygon'" ng-repeat="field in polygonFields">
+						<form role="form">
+							<div class="form-group textcolor" >  
+								{{field}}<input  class="form-control" ng-model=filters[field] required />	  	  
+							</div>	  
+					</div>
+
+					<div  ng-if="currentItems=='polyline'" ng-repeat="field in polylineFields">
+						<form role="form">
+							<div class="form-group textcolor" >  
+								{{field}}<input  class="form-control" ng-model=filters[field] required />	  	  
+							</div>	  
+					</div>
+
+					<div  ng-if="currentItems=='path'" ng-repeat="field in pathFields">
+						<form role="form">
+							<div class="form-group textcolor" >  
+								{{field}}<input  class="form-control" ng-model=filters[field] required />	  	  
+							</div>	  
+					</div>
+
+					<div  ng-if="currentItems=='text'" ng-repeat="field in textFields">
+						<form role="form">
+							<div class="form-group textcolor" >  
+								{{field}}<input  class="form-control" ng-model=filters[field] required />	  	  
+							</div>	  
+					</div>
+
+				</div>
+				<div class="col-md-9 right">
+					<div id="overlay4">  
+						<div>
+							<svg id="d" height="870" width="1100"></svg>
+						</div>
+					</div>
+				</div>
+		</div>
+	</div>
+</div>
+
+<g>
+<svg  id="mySVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" height="2000" style="width:100%;">     
+<g my-svg ng-click="createSVG()" id="buttonGrp" >		
+ <rect  id="rect"  x="20" y="15" width="70" height="30" stroke="green" stroke-width="4"   />
+ <text x="24" y="33" fill="red">Click Me</text>
+		
+		</g>
+		</svg>
+</g>
+
+<script src="script.js"></script>
+
+</body>
+</html>
+
+
